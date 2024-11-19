@@ -1,3 +1,5 @@
+const dotENV = require('dotenv')
+dotENV.config()
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -10,10 +12,13 @@ const staticRoute = require("./routes/staticRouter");
 const userRoute = require("./routes/user");
 
 const app = express();
-const PORT = 8001;
 
-connectToMongoDB(process.env.MONGODB ?? "mongodb://localhost:27017/short-url").then(() =>
-  console.log("Mongodb connected")
+
+// connectToMongoDB(process.env.MONGODB ?? "mongodb://localhost:27017/short-url").then(() =>
+//   console.log("Mongodb connected")
+// );
+
+connectToMongoDB(process.env.MONGODB).then(() => console.log("Mongodb connected")
 );
 
 app.set("view engine", "ejs");
@@ -44,4 +49,4 @@ app.get("/url/:shortId", async (req, res) => {
   res.redirect(entry.redirectURL);
 });
 
-app.listen(PORT, () => console.log(`Server Started at PORT:${PORT}`));
+app.listen(process.env.PORT, () => console.log(`Server Started at PORT:${process.env.PORT}`));
